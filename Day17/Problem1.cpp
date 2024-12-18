@@ -27,17 +27,14 @@ int main(){
 
 	int ip=0,n=opr.size();
 
+	vector<int> ans;
+
 	while(ip < n) {
-	    int a = opr[ip], b = opr[ip + 1];
+	    int a=opr[ip],b=opr[ip + 1],c=combo(b);;
 
-	    if(a == 0) {
-	        int m=combo(b);       
-	        int div=pow(2,m);
-	        A = A / div;
-	    }
-
-	    else if(a == 1) B = B ^ b;
-	    else if(a == 2) B=combo(b)%8;
+	    if(a == 0) A>>=c;
+	    else if(a == 1) B^=b;
+	    else if(a == 2) B=c%8;
 
 	    else if(a == 3) {
 	        if(A != 0) {
@@ -45,26 +42,18 @@ int main(){
 	            continue;
 	        }
 	    }
-	    else if(a == 4) B = B ^ C;
 
-	    else if(a == 5) {
-	        int val=combo(b)%8;
-	        cout << val <<"," ;
-	    }
-	    else if(a == 6) {
-	        int m=combo(b);       
-	        int div=pow(2,m);
-	        B = A / div;
-	    }
-	    else if(a == 7) {
-	        int m=combo(b);       
-	        int div=pow(2,m);
-	        C = A / div;
-	    }
+	    else if(a == 4) B^=C;
+
+	    else if(a == 5) ans.push_back(c%8);
+	    else if(a == 6) B=(A>>c);
+	    else if(a == 7) C=(A>>c);
+	    
 	    ip += 2;
 	}
+	
+	for(int i=0;i<ans.size()-1;i++) cout<<ans[i]<<",";
+	cout<<ans[ans.size()-1]<<"\n";
 
 	return 0;
 }
-
-
