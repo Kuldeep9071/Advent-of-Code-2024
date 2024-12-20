@@ -4,33 +4,23 @@ using namespace std;
 #define n 141
 
 bool in(int x,int y){
-	return x>0 && y>0 && x<n && y<n;
+	return x>=0 && y>=0 && x<n && y<n;
 }
 
-int cheat(int i,int j,const vector<vector<int>> &dis){
-	queue<vector<int>> q;
-	vector<vector<int>> move={{1,0},{0,1},{-1,0},{0,-1}};
-	vector<vector<bool>> vis(n,vector<bool> (n,false));
-
-	q.push({i,j});
-	vis[i][j]=true;
+int cheat20ps(const vector<vector<int>> &dis){
 	int ans=0;
-
-	while(!q.empty()){
-		vector<int> ele=q.front();
-		q.pop();
-		int x=ele[0],y=ele[1];
-
-		for(int i=0;i<4;i++){
-			int dx=move[i][0],dy=move[i][1];
-			if(in(x+dx,y+dy) && !vis[x+dx][y+dy]){
-				if(dis[x+dx][y+dy]!=-1) q.push({x+dx,y+dy}),vis[x+dx][y+dy]=true;
-				else{
-					int nxt=dis[x][y]+102;
-					int dx1=move[(i+1)%4][0],dy1=move[(i+1)%4][1];
-					int dx2=move[(i+3)%4][0],dy2=move[(i+3)%4][1];
-
-					if((in(x+2*dx,y+2*dy) && dis[x+2*dx][y+2*dy]>=nxt) || (in(x+dx1,y+dy1) && dis[x+dx1][y+dy1]>=nxt) || (in(x+dx2,y+dy2) && dis[x+dx2][y+dy2]>=nxt)) ans++;
+	for(int i=0;i<n;i++){
+		for(int j=0;j<n;j++){
+			if(dis[i][j]==-1) continue;
+			vector<vector<bool>> vis(n,vector<bool>(n,false));
+			for(int sec=2;sec<=20;sec++){
+				for(int di=0;di<=sec;di++){
+					int dj=sec-di;
+					vector<vector<int>> move={{i+di,j+dj},{i+di,j-dj},{i-di,j+dj},{i-di,j-dj}};
+					for(auto ele:move){
+						int x=ele[0],y=ele[1];
+						if(in(x,y) && dis[x][y]!=-1 && !vis[x][y] && dis[i][j]>=dis[x][y]+100+sec) ans++,vis[x][y]=true;
+					}
 				}
 			}
 		}
@@ -79,7 +69,7 @@ int main(){
 
 	int prev=dis[ex][ey]; // Answer without Cheat
 
-	int ans=cheat(x,y,dis); // Answer With 2 Pico Second 1 Cheat
+	int ans=cheat20ps(dis); // Answer with 20 Pico Second Cheat
 
 	cout<<ans<<"\n";
 	
