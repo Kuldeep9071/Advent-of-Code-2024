@@ -1,6 +1,8 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+// Here "Bin_Dec" function takes reversed string representation of number as parameter
+
 unsigned long long Bin_Dec(string s){
     unsigned long long ans=0;
     int n=s.size();
